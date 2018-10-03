@@ -31,27 +31,39 @@ $("#submit-button").on("click", function () {
         firebaseFrequency: frequency,
         firebaseFirstTrainTime: firstTrainTime
         // firebaseNextArrival: nextArrival
-    })
-})
+    });
+});
 
 function display(data) {
+    var newFirstTrainTimeMilitary = parseInt(data.val().firebaseFirstTrainTime);
+    var newFreq = parseInt(data.val().firebaseFrequency);
     var newKey = data.key;
     var newRow = $("<tr>");
-    var newTrainName = $("<td>").text(data.val().firebaseTrain);
-    var newdestination = $("<td>").text(data.val().firebasedestination);
+    var newTrainName = $("<td>").text(data.val().firebaseTrain.toUpperCase());
+    var newdestination = $("<td>").text(data.val().firebasedestination.toUpperCase());
     var newFrequency = $("<td>").text(data.val().firebaseFrequency);
-    var newFirstTrainTime = $("<td>").text(data.val().firebaseFirstTrainTime);
     var newNextArrival;
+    // console.log(typeof newFirstTrainTimeMilitary);
+    // console.log(typeof newFreq);
     // console.log(data.val().firebaseFirstTrainTime+" "+now);
-    while(data.val().firebaseFirstTrainTime < now) {
-        newFirstTrainTime = newFirstTrainTime + newFrequency;
-        console.log(newFirstTrainTime);
-    };
+    if (newFirstTrainTimeMilitary <= now) {
+        do {
+            newFirstTrainTimeMilitary = newFirstTrainTimeMilitary + newFreq;
+            console.log(newFirstTrainTimeMilitary);
+            console.log("Now: " + now);
+        }
+        while (newFirstTrainTimeMilitary <= now);
+    }
+    // else {
+
+    // }
+    var minutesAway = $("<td>").text(newFirstTrainTimeMilitary - now);
+    var newFirstTrainTime = $("<td>").text(newFirstTrainTimeMilitary);
     // var newMinutesAway = $("<td>").text();
     var deleteButton = $("<button>").text("Delete");
-    deleteButton.addClass("my-2 delete-button");
+    deleteButton.addClass("btn btn-danger mb-2 my-2 delete-button");
     // newStartDate.addClass("true");
-    newRow.append(newTrainName, newdestination, newFrequency, newFrequency, newFrequency, deleteButton);
+    newRow.append(newTrainName, newdestination, newFrequency, newFirstTrainTime, minutesAway, deleteButton);
     $("td").attr("contenteditable", "true");
     deleteButton.attr("data-key", newKey);
     newRow.attr("id", newKey);
@@ -61,14 +73,14 @@ function display(data) {
 
 database.ref().on("child_added", function (data) {
     display(data);
-})
+});
 
 
 $(document).on("click", ".delete-button", function () {
     var thisKey = $(this).attr("data-key");
     database.ref().child(thisKey).remove();
     $("#" + thisKey).remove();
-})
+});
 
 // function editData() {
 //     var spans = document.getElementsByTagName("td"),

@@ -1,8 +1,15 @@
-#heading {
-    background-color: navy;
-    /* background-image: url("https://images.unsplash.com/photo-1527069809990-e12175b89884?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3143c9d37dea733a35bfba7f39cdd225&auto=format&fit=crop&w=3734&q=80"); */
+.jumbotron {
+    background-color: #007bff;
+    color: whitesmoke;
+    padding: 2rem 2rem;
 }
 
-.jumbotron {
-    color: whitesmoke;
+.card-header {
+    background-color: #007bff;
+    color: whitesmoke 
+}
+
+.card {
+    border: #007bff 3px solid;
+
 }
